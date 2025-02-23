@@ -12,7 +12,7 @@ test('Add to cart from catalog page', async ({ page }) => {
   await expect(page.locator('text="Sauce Labs Backpack"')).toBeEnabled();
 });
 
-test('Add to cart from product page', async ({ page }) => {
+test('Add to cart from product description page', async ({ page }) => {
     await page.goto('https://www.saucedemo.com/');
     await page.locator('[data-test="username"]').fill('standard_user');
     await page.locator('[data-test="password"]').fill('secret_sauce');
@@ -32,4 +32,7 @@ test('Add to cart from product page', async ({ page }) => {
     await page.locator('[data-test="logout-sidebar-link"]').click();
     await expect(page.locator('[data-test="login-button"]')).toBeEnabled();
   });
+
+
+
 
