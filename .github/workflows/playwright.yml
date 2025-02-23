@@ -1,0 +1,91 @@
+name: Playwright Tests
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+    
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        distribution: zulu
+        java-version: 17
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Install Playwright Browsers
+      run: npx playwright install chromium  # Installs Playwright browsers
+
+    - name: Install Allure Commandline
+      run: npm install -g allure-commandline --save-dev
+
+    - name: Load test report history from gh-pages branch
+      uses: actions/checkout@v3
+      if: always()
+      continue-on-error: true
+      with: 
+        ref: gh-pages
+        path: history-from-branch
+
+    - name: Copy history from gh-pages branch to allure-results folder
+      if: always()
+      run: |
+        mkdir allure-results\history
+        xcopy .\history-from-branch\history\* .\allure-results\history /E /I /Y
+
+    - name: Run Playwright tests
+      run: npx playwright test
+
+    - name: Generate Allure Report
+      if: always()
+      run: |
+        allure generate allure-results --clean -o allure-report
+
+    - name: Configure Git
+      if: always()
+      run: |
+        git config --global user.email "akashdeep.srivastava@outlook.com"
+        git config --global user.name "akashdeepqa"
+      
+    - name: Push Allure Report to gh-pages
+      if: always()
+      run: |
+        mkdir gh-pages-content
+        cd gh-pages-content
+        git init
+        git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+        git fetch origin gh-pages
+        git checkout gh-pages || git checkout --orphan gh-pages
+        git rm -rf . --ignore-unmatch
+        cd ..
+        xcopy /E /I /Y allure-report\* gh-pages-content\
+        cd gh-pages-content
+        $currentTimeIST = [System.TimeZoneInfo]::ConvertTimeBySystemTimeZoneId((Get-Date), "India Standard Time").ToString("yyyy-MM-dd HH:mm:ss")
+        git add .
+        git commit -m "Update Allure Report [$currentTimeIST IST]"
+        git push --force origin gh-pages
+      
+    
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: allure-report
+        path: allure-report/
+        retention-days: 30
