@@ -1,0 +1,4 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","10331","Add to cart from summary page","chromium","Sun Feb 23 04:19:39 UTC 2025","broken","Sun Feb 23 04:19:49 UTC 2025","","sauceDemoTests.spec.js","",""
+"","7874","Add to cart from product page","chromium","Sun Feb 23 04:19:50 UTC 2025","passed","Sun Feb 23 04:19:58 UTC 2025","","sauceDemoTests.spec.js","",""
+"","6739","Logout","chromium","Sun Feb 23 04:19:58 UTC 2025","passed","Sun Feb 23 04:20:05 UTC 2025","","sauceDemoTests.spec.js","",""

@@ -1,1 +1,1 @@
-[]
+[{"uid":"97cd1545ff0e2f40","name":"Add to cart from summary page","time":{"start":1740284379274,"stop":1740284389605,"duration":10331},"status":"broken","severity":"normal"},{"uid":"e687a0fa2b32574d","name":"Add to cart from product page","time":{"start":1740284390676,"stop":1740284398550,"duration":7874},"status":"passed","severity":"normal"},{"uid":"b5cc4dfd88dbee10","name":"Logout","time":{"start":1740284398715,"stop":1740284405454,"duration":6739},"status":"passed","severity":"normal"}]
